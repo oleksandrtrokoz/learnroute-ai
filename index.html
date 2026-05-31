@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LearnRoute AI - Adaptive Learning Companion</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="aurora aurora-one"></div>
+  <div class="aurora aurora-two"></div>
+  <div class="container">
+    <header class="hero card fade-in">
+      <div>
+        <p class="eyebrow">Adaptive Learning Prototype</p>
+        <h1 data-i18n="title">LearnRoute AI</h1>
+        <p data-i18n="subtitle">One learner, one route: diagnostics, adaptive lessons, and instant feedback in one flow.</p>
+      </div>
+      <ol class="flow-stepper" id="flowStepper">
+        <li data-flow-step="setup" class="active"><span>1</span><em data-i18n="flowSetup">Setup</em></li>
+        <li data-flow-step="lesson"><span>2</span><em data-i18n="flowLesson">Lesson</em></li>
+        <li data-flow-step="practice"><span>3</span><em data-i18n="flowPractice">Practice</em></li>
+        <li data-flow-step="summary"><span>4</span><em data-i18n="flowSummary">Summary</em></li>
+      </ol>
+    </header>
+
+    <section class="tab-switch card fade-in">
+      <button id="learnTabBtn" class="tab-btn active" data-i18n="tabLearn">Learn</button>
+      <button id="progressTabBtn" class="tab-btn" data-i18n="tabProgress">Progress</button>
+    </section>
+
+    <main class="tabs-shell">
+      <section id="learnTab" class="tab-panel stack">
+        <article id="setupCard" class="card slide-up delay-1">
+          <h2 data-i18n="setupTitle">Student Setup</h2>
+          <div class="field-grid">
+            <label>
+              <span data-i18n="topicLabel">Learning Topic</span>
+              <select id="topicSelect"></select>
+            </label>
+            <label>
+              <span data-i18n="langLabel">Language</span>
+              <select id="languageSelect"></select>
+            </label>
+            <label>
+              <span data-i18n="styleLabel">Preferred Style</span>
+              <select id="styleSelect"></select>
+            </label>
+          </div>
+          <div class="action-row">
+            <button id="startDiagnosticBtn" class="btn-primary" data-i18n="startDiagnostic">Start 3-Question Diagnostic</button>
+          </div>
+
+          <div class="mode-guide">
+            <h3 data-i18n="modeGuideTitle">Explanation Modes</h3>
+            <ul class="mode-guide-list">
+              <li><strong data-i18n="modeStepTitle">Step-by-step</strong> <span data-i18n="modeStepDesc">Break the problem into ordered steps and validate each one.</span></li>
+              <li><strong data-i18n="modeVisualTitle">Visual</strong> <span data-i18n="modeVisualDesc">Convert equations into shape, symmetry, and graph structure.</span></li>
+              <li><strong data-i18n="modeAnalogyTitle">Analogy</strong> <span data-i18n="modeAnalogyDesc">Map abstract symbols to concrete, familiar scenarios.</span></li>
+              <li><strong data-i18n="modeSimpleTitle">Simplified</strong> <span data-i18n="modeSimpleDesc">Strip to one core rule first, then add complexity gradually.</span></li>
+            </ul>
+          </div>
+
+          <div id="profileChips" class="chip-row"></div>
+        </article>
+
+        <article id="diagnosticCard" class="card slide-up hidden">
+          <h2 data-i18n="diagnosticTitle">Baseline Diagnostic</h2>
+          <div class="diagnostic-head">
+            <p id="diagProgress"></p>
+            <p id="diagTimer"></p>
+          </div>
+          <h3 id="diagQuestionText"></h3>
+          <div id="diagOptions" class="option-list"></div>
+          <label class="confidence-wrap">
+            <span id="confidenceLabel" data-i18n="confidenceLabel">Confidence: 3/5</span>
+            <input id="confidenceRange" type="range" min="1" max="5" value="3">
+          </label>
+          <div class="action-row">
+            <button id="nextDiagnosticBtn" class="btn-primary"></button>
+          </div>
+        </article>
+
+        <article id="lessonCard" class="card slide-up hidden">
+          <h2 data-i18n="lessonTitle">Adaptive Lesson</h2>
+          <h3 id="lessonNodeTitle"></h3>
+          <p id="lessonBody" class="lesson-body"></p>
+          <div class="action-row">
+            <button id="explainDifferentlyBtn" class="btn-secondary" data-i18n="explainDifferently">Explain It Differently</button>
+            <button id="startPracticeBtn" class="btn-primary" data-i18n="startPractice">Start Practice</button>
+          </div>
+        </article>
+
+        <article id="practiceCard" class="card slide-up hidden">
+          <h2 data-i18n="practiceTitle">AI Practice + Feedback</h2>
+          <p id="practicePrompt"></p>
+          <input id="practiceInput" type="text" data-i18n-placeholder="answerPlaceholder" placeholder="Type your answer">
+          <label class="confidence-wrap">
+            <span id="practiceConfidenceLabel" data-i18n="practiceConfidenceLabel">Practice Confidence: 3/5</span>
+            <input id="practiceConfidenceRange" type="range" min="1" max="5" value="3">
+          </label>
+          <label>
+            <span data-i18n="reasoningLabel">Reasoning (optional but recommended)</span>
+            <textarea id="reasoningInput" rows="3" data-i18n-placeholder="reasoningPlaceholder" placeholder="Show your steps or explain your logic."></textarea>
+          </label>
+          <div class="action-row">
+            <button id="submitPracticeBtn" class="btn-primary" data-i18n="submitAnswer">Submit</button>
+            <button id="hintBtn" class="btn-secondary" data-i18n="showHint">Hint</button>
+            <button id="nextQuestionBtn" class="btn-secondary" data-i18n="nextAiQuestion">Next AI Question</button>
+          </div>
+          <div id="hintLadderBox" class="hint-ladder hidden">
+            <p><strong data-i18n="hintLadderTitle">Hint Ladder</strong></p>
+            <ul id="hintList"></ul>
+          </div>
+          <div id="stepFeedbackBox" class="hint-ladder hidden">
+            <p><strong data-i18n="stepFeedbackTitle">Step Feedback</strong></p>
+            <ul id="stepFeedbackList"></ul>
+          </div>
+          <p id="feedbackBox" class="feedback"></p>
+        </article>
+
+        <article id="tutorCard" class="card slide-up hidden">
+          <h2 data-i18n="tutorTitle">Free-Response Tutor</h2>
+          <p data-i18n="tutorSubtitle">Ask for another explanation in your selected mode.</p>
+          <label>
+            <span data-i18n="tutorPromptLabel">Your question</span>
+            <textarea id="tutorPromptInput" rows="3" data-i18n-placeholder="tutorPromptPlaceholder" placeholder="I still do not get why both positive and negative roots matter."></textarea>
+          </label>
+          <div class="action-row">
+            <button id="askTutorBtn" class="btn-primary" data-i18n="askTutor">Ask Tutor</button>
+          </div>
+          <p id="tutorResponse" class="lesson-body"></p>
+        </article>
+
+        <article id="sessionSummaryCard" class="card slide-up delay-3 hidden">
+          <h2 data-i18n="sessionSummaryTitle">Session Summary</h2>
+          <p id="summaryCalibration" class="review-meta"></p>
+          <h3 data-i18n="summaryStrengthsTitle">Strengths</h3>
+          <ul id="summaryStrengthsList" class="review-list compact-list"></ul>
+          <h3 data-i18n="summaryMisconceptionsTitle">Common Misconceptions</h3>
+          <ul id="summaryMisconceptionsList" class="review-list compact-list"></ul>
+          <h3 data-i18n="summaryNextActionsTitle">Next Actions</h3>
+          <ul id="summaryNextActionsList" class="review-list compact-list"></ul>
+        </article>
+      </section>
+
+      <section id="progressTab" class="tab-panel stack hidden">
+        <article class="card slide-up delay-1">
+          <h2 data-i18n="pathTitle">Learning Path Dashboard</h2>
+          <p id="pathTopic"></p>
+          <ul id="pathList" class="path-list"></ul>
+          <div class="progress-shell">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+          <p id="progressLabel"></p>
+        </article>
+
+        <article class="card slide-up delay-2">
+          <h2 data-i18n="masteryTitle">Knowledge State</h2>
+          <div id="masteryBars" class="mistake-bars"></div>
+        </article>
+
+        <article id="reviewCard" class="card slide-up delay-2 hidden">
+          <h2 data-i18n="reviewTitle">Spaced Review Queue</h2>
+          <div class="action-row compact">
+            <button id="reviewNowBtn" class="btn-secondary" data-i18n="reviewNow">Review Now</button>
+          </div>
+          <ul id="reviewQueue" class="review-list"></ul>
+        </article>
+
+        <article id="attemptHistoryCard" class="card slide-up delay-2 hidden">
+          <h2 data-i18n="attemptHistoryTitle">Attempt History</h2>
+          <ul id="attemptHistoryList" class="review-list"></ul>
+        </article>
+
+        <article id="teacherCard" class="card slide-up delay-3 hidden">
+          <h2 data-i18n="teacherTitle">Teacher Dashboard (Lite)</h2>
+          <div class="metrics">
+            <div class="metric">
+              <p data-i18n="metricAccuracy">Diagnostic Accuracy</p>
+              <strong id="metricAccuracy">0%</strong>
+            </div>
+            <div class="metric">
+              <p data-i18n="metricTime">Avg Response Time</p>
+              <strong id="metricTime">0s</strong>
+            </div>
+            <div class="metric">
+              <p data-i18n="metricConfidence">Avg Confidence</p>
+              <strong id="metricConfidence">0/5</strong>
+            </div>
+            <div class="metric">
+              <p data-i18n="metricCurrentNode">Current Mastery Node</p>
+              <strong id="metricNode">-</strong>
+            </div>
+          </div>
+          <h3 data-i18n="commonMistakes">Common Mistakes</h3>
+          <div id="mistakeBars" class="mistake-bars"></div>
+          <h3 data-i18n="teacherClustersTitle">Error Clusters</h3>
+          <ul id="teacherClusters" class="cluster-list"></ul>
+        </article>
+
+        <article id="debugCard" class="card slide-up delay-3 hidden">
+          <h2 data-i18n="debugTitle">Developer Debug</h2>
+          <p class="review-meta" data-i18n="debugSubtitle">Technical diagnostics are hidden from learners.</p>
+          <div class="metrics">
+            <div class="metric">
+              <p data-i18n="backendStatusLabel">AI Backend</p>
+              <strong id="backendStatusChip" class="status-chip">Checking...</strong>
+            </div>
+            <div class="metric">
+              <p data-i18n="metaEngine">Engine</p>
+              <strong id="debugEngineValue">-</strong>
+            </div>
+          </div>
+          <div class="chip-row" id="questionMetaChips"></div>
+          <div class="ai-scores">
+            <div class="metric">
+              <p data-i18n="semanticScore">Semantic Match</p>
+              <strong id="semanticScoreValue">-</strong>
+            </div>
+            <div class="metric">
+              <p data-i18n="reasoningScore">Reasoning Match</p>
+              <strong id="reasoningScoreValue">-</strong>
+            </div>
+            <div class="metric">
+              <p data-i18n="confidenceBand">Confidence Band</p>
+              <strong id="confidenceBandValue">-</strong>
+            </div>
+            <div class="metric">
+              <p data-i18n="safetyCheck">Safety Check</p>
+              <strong id="safetyCheckValue">-</strong>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
